@@ -27,4 +27,8 @@ impl Universe {
       self.cells[idx] = Cell::Alive;
     }
   }
+
+  fn get_index(&self, row: u32, column: u32) -> usize {
+    (row * self.width + column) as usize
+  }
 }
