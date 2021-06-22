@@ -13,7 +13,7 @@ pub struct Universe {
 }
 
 impl Universe {
-  pub fn new(widthL u32, height: u32) -> Universe {
+  pub fn new(width: u32, height: u32) -> Universe {
     Universe {
       width: width,
       height: height,
@@ -39,7 +39,7 @@ impl fmt::Display for Universe {
     for line in self.cells.as_slice().chunks(self.width as usize) {
       for &cell in line {
         let symbol = if cell == Cell::Dead { '◻' } else { '◼' };
-         write!(f, "{}", symbol)?;
+        write!(f, "{}", symbol)?;
       }
       write!(f, "\n")?;
     }

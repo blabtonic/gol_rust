@@ -15,29 +15,10 @@ use std::io::{stdout, Write};
 use std::io::{BufRead, BufReader};
 use std::time::Duration;
 
+mod game;
+
 fn main() {
-    let matches = App::new("CLI Game Of Life")
-        .version(crate_version!())
-        .author("blabtonic")
-        .about("Simple implementation of Conway's Game of Life in rust. Rest in Peace Johm Conway.")
-        .after_help("No win conditions have fun!")
-        .arg(
-            Arg::with_name("INPUT")
-                .help("Sets the input file to configure initial state")
-                .short("i")
-                .long("input")
-                .takes_value(true),
-        )
-        .arg(
-            Arg::with_name("DELAY")
-                .help("Sets the delay between game ticks. Value is in miliseconds")
-                .short("d")
-                .long("delay")
-                .takes_value(true)
-                .default_value("500"),
-        )
-        .get_matches();
-    let mut stdout = stdout();
-    // What is this? unwrap -> parse -> unwrap WHY???
-    let delay: u64 = matches.value_of("DELAY").unwrap().parse().unwrap();
+    let mut game = game::Universe::new(5, 5);
+    game.set_cells(&[(2, 1), (2, 2), (2, 3)]);
+    print!("{}", game);
 }
