@@ -17,8 +17,33 @@ use std::time::Duration;
 
 mod game;
 
-fn main() {
+fn main() -> Result <()> {
     let mut game = game::Universe::new(5, 5);
     game.set_cells(&[(2, 1), (2, 2), (2, 3)]);
-    print!("{}", game);
+    execute!(
+        stdout(),
+        EnterAlternateScreen,
+        SetForegroundColor(Color::Grey),
+        Hide
+    )?;
+
+    loop {
+        if poll(Duration::from_millis(500))? {
+            match read()? {
+                Event::Key(_) => break,
+                _ => {}
+            }
+        } else {
+            execute!(
+                stdout(),
+                Clear(ClearType::All),
+                MoveTo(0,0),
+                Print(&game),
+                Print("Press enter to exit...")
+            )?;
+            game.tick();
+        }
+    }
+    execute!(stdout(), ResetColor, Show, LeaveAlternateScreen)?;
+    Ok(())
 }
